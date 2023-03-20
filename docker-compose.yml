@@ -1,0 +1,58 @@
+version: '3.4'
+services:
+  aplicacao-postgres:
+    image: aplicacaodocker
+    container_name: aplicacaodocker-postgres
+    hostname: aplicacaodocker-postgres
+    environment:
+      NOME_APLICACAO: 'aplicacaodocker-POSTGRES'
+      PORTA: 8088
+      DATASOURCE_URL: 'jdbc:postgresql://dbpostgres:5432/postgres'
+    ports:
+      - 8088:8088
+    depends_on:
+      - db-postgres
+
+  aplicacao-mysql:
+    image: aplicacaodocker
+    container_name: aplicacaodocker-mysql
+    hostname: aplicacaodocker-mysql
+    environment:
+      NOME_APLICACAO: aplicacaodocker-MYSQL
+      PORTA: 9090
+      DATASOURCE_PASSWORD: 'password'
+      DATASOURCE_USERNAME: 'user'
+      JPA_DIALECT: 'org.hibernate.dialect.MySQLDialect'
+      DATASOURCE_URL: 'jdbc:mysql://dbmysql/db'
+    ports:
+      - 9090:9090
+    depends_on:
+      - db-mysql
+
+  db-postgres:
+    image: postgres
+    hostname: dbpostgres
+    container_name: dbpostgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+
+  db-mysql:
+    image: mysql
+    hostname: dbmysql
+    container_name: dbmysql
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+
+
